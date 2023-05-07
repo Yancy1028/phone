@@ -49,7 +49,8 @@ function find (phoneOrigin) {
       var phoneType = buf.readInt8(indexOffset + pos * 9 + 8, 1)
       var content = buf.slice(infoOffset, infoOffset + 100)
       var endIdx = 0
-      while (endIdx < 100 && content[endIdx] !== '\n') {
+      //BUG? 增加判断 content[endIdx] ，当为 \0 时说明找到了位置
+      while (endIdx < 100 && content[endIdx] !== '\n' && content[endIdx] !== '\0') {
         endIdx++
       }
       return formatResult(phoneOrigin, phoneType, content.toString('utf8', 0, endIdx))
